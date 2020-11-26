@@ -1,5 +1,5 @@
 [Unit]
-Description=NanoPi reset button
+Description=Reset Button Handler for NanoPi-R1
 After=network.target
 
 [Service]
