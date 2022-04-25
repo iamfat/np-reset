@@ -7,7 +7,7 @@ Type=simple
 Restart=always
 RestartSec=1
 User=root
-ExecStart=/usr/local/bin/reset /dev/input/event0
+ExecStart=/usr/local/bin/reset /dev/input/event0 /sys/class/leds/green\:lan/brightness
 
 [Install]
 WantedBy=multi-user.target

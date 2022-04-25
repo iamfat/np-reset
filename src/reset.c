@@ -11,9 +11,9 @@
 char *DEFAULT_BUTTON_PATH = "/dev/input/event0";
 char *DEFAULT_LED_PATH    = "/sys/class/leds/LED3/brightness";
 
-void toggleLED(u_int8_t on)
+void toggleLED(const char* led_path, u_int8_t on)
 {
-    int fd = open(DEFAULT_LED_PATH, O_WRONLY);
+    int fd = open(led_path, O_WRONLY);
     if (fd >= 0) {
         write(fd, on ? "1" : "0", 1);
         close(fd);
@@ -23,8 +23,12 @@ void toggleLED(u_int8_t on)
 int main(int argc, char **argv)
 {
     char *button_path = DEFAULT_BUTTON_PATH;
+    char *led_path    = DEFAULT_LED_PATH;
     if (argc > 1) {
         button_path = argv[1];
+    }
+    if (argc > 2) {
+        led_path = argv[2];
     }
 
     struct input_event events[EVENT_BUF_NUM];
@@ -61,11 +65,11 @@ int main(int argc, char **argv)
             if (events[i].type == EV_KEY) {
                 switch (events[i].value) {
                 case 0:
-                    toggleLED(0);
+                    toggleLED(led_path, 0);
                     pressed_at = 0;
                     break;
                 case 1:
-                    toggleLED(1);
+                    toggleLED(led_path, 1);
                     pressed_at = clock();
                     break;
                 }
